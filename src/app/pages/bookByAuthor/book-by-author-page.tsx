@@ -3,7 +3,7 @@ import { useGetAuthorBooks } from '@/hooks/authors/useAuthor';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-const BookByAuthor = () => {
+const BookByAuthorPage = () => {
   const { authorId } = useParams(); // ambil dari URL: /authors/:authorId
   const { data, isLoading, isError } = useGetAuthorBooks(Number(authorId));
 
@@ -58,4 +58,4 @@ const BookByAuthor = () => {
   );
 };
 
-export default BookByAuthor;
+export default BookByAuthorPage;

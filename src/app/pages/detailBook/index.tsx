@@ -1,3 +1,3 @@
-import DetailBook from './detail-book';
+import DetailBookPage from './detail-book-page';
 
-export default DetailBook;
+export default DetailBookPage;

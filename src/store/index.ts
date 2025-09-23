@@ -2,6 +2,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import bookFilterReducer from './slices/bookFilterSlice';
+import cartReducer from './slices/cart-slice';
 import {
   persistStore,
   persistReducer,
@@ -16,14 +17,15 @@ import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  bookFilter: bookFilterReducer, // ✅ tambahkan slice baru
+  bookFilter: bookFilterReducer,
+  cart: cartReducer,
 });
 
 // konfigurasi persist
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // ✅ hanya auth yang disimpan
+  whitelist: ['auth'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

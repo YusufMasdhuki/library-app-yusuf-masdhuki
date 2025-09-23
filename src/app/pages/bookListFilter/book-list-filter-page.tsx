@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import BookFilter from './book-filter';
 import BookList from './bookList';
 
-const BookListFilter = () => {
+const BookListFilterPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -24,4 +24,4 @@ const BookListFilter = () => {
   );
 };
 
-export default BookListFilter;
+export default BookListFilterPage;

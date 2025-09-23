@@ -1,3 +1,3 @@
-import BookByAuthor from './book-by-author';
+import BookByAuthorPage from './book-by-author-page';
 
-export default BookByAuthor;
+export default BookByAuthorPage;

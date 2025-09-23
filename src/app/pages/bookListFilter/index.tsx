@@ -1,3 +1,3 @@
-import BookListFilter from './book-list-filter';
+import BookListFilterPage from './book-list-filter-page';
 
-export default BookListFilter;
+export default BookListFilterPage;

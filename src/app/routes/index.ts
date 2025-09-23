@@ -35,4 +35,8 @@ export const routes: Router[] = [
     path: '/cart',
     element: lazy(() => import('../pages/cartPage')),
   },
+  {
+    path: '/checkout',
+    element: lazy(() => import('../pages/checkoutPage')),
+  },
 ];
