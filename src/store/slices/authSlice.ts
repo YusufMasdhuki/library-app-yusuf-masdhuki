@@ -3,39 +3,59 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { LoginSuccessResponse } from '@/types/auth-type';
 
 interface AuthState {
-  user: LoginSuccessResponse['user'] | null;
+  user: LoginSuccessResponse['data']['user'] | null;
   token: string | null;
   isAuthenticated: boolean;
 }
 
+// Helper aman buat parse JSON
+function safeJSONParse<T>(value: string | null): T | null {
+  if (!value) return null;
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    console.warn('Failed to parse JSON from localStorage:', value);
+    return null;
+  }
+}
+
+const storedToken = localStorage.getItem('auth_token');
+const storedUser = safeJSONParse<LoginSuccessResponse['data']['user']>(
+  localStorage.getItem('auth_user')
+);
+
 const initialState: AuthState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  user: storedUser,
+  token: storedToken,
+  isAuthenticated: !!storedToken,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // ✅ Set auth setelah login
     setCredentials: (
       state,
       action: PayloadAction<{
-        user: LoginSuccessResponse['user'];
+        user: LoginSuccessResponse['data']['user'];
         token: string;
       }>
     ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
-    },
 
-    // ✅ Logout
+      // Simpan ke localStorage
+      localStorage.setItem('auth_token', action.payload.token);
+      localStorage.setItem('auth_user', JSON.stringify(action.payload.user));
+    },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
     },
   },
 });

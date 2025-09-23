@@ -19,4 +19,20 @@ export const routes: Router[] = [
     path: '/register',
     element: lazy(() => import('../pages/registerPage')),
   },
+  {
+    path: '/detail-book/:id',
+    element: lazy(() => import('../pages/detailBook')),
+  },
+  {
+    path: '/book-list-filter',
+    element: lazy(() => import('../pages/bookListFilter')),
+  },
+  {
+    path: '/book-by-author/:authorId',
+    element: lazy(() => import('../pages/bookByAuthor')),
+  },
+  {
+    path: '/cart',
+    element: lazy(() => import('../pages/cartPage')),
+  },
 ];

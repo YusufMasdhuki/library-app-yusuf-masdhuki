@@ -20,10 +20,14 @@ import type {
 import { meService } from '@/services/me/service';
 
 // ✅ Get current user info
-export const useGetMe = () =>
+export const useGetMe = (options?: { enabled?: boolean }) =>
   useQuery<GetMeSuccessResponse, GetMeErrorResponse>({
     queryKey: ['me'],
-    queryFn: meService.getMe,
+    queryFn: async () => {
+      const res = await meService.getMe();
+      return res;
+    },
+    enabled: options?.enabled ?? true,
   });
 
 // ✅ Update current user info

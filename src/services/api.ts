@@ -21,18 +21,3 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
-
-// ✅ Interceptor response
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('auth_token');
-      // optional: redirect ke login
-      if (typeof window !== 'undefined') {
-        window.location.href = '/auth?tab=login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);

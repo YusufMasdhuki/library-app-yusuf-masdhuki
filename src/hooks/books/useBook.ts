@@ -1,5 +1,11 @@
 // src/hooks/book/useBook.ts
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+  InfiniteData,
+} from '@tanstack/react-query';
 import type {
   GetBooksSuccessResponse,
   GetBooksErrorResponse,
@@ -31,12 +37,28 @@ import type {
 import { bookService } from '@/services/books/service';
 
 // ✅ Get all books
-export const useGetBooks = (params?: GetBooksParams) =>
-  useQuery<GetBooksSuccessResponse, GetBooksErrorResponse>({
-    queryKey: ['books', params],
-    queryFn: () => bookService.getBooks(params),
+export const useGetBooksInfinite = (params: Omit<GetBooksParams, 'page'>) => {
+  return useInfiniteQuery<
+    GetBooksSuccessResponse, // TQueryFnData
+    GetBooksErrorResponse, // TError
+    InfiniteData<GetBooksSuccessResponse>, // TData (return type)
+    [_: string, Omit<GetBooksParams, 'page'>], // TQueryKey
+    number // TPageParam
+  >({
+    queryKey: ['books-infinite', params],
+    queryFn: ({ pageParam = 1 }) =>
+      bookService.getBooks({
+        ...params,
+        page: pageParam,
+        limit: params.limit ?? 12,
+      }),
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.data.pagination;
+      return page < totalPages ? page + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
-
+};
 // ✅ Get recommended books
 export const useGetRecommendedBooks = (params?: RecommendBooksParams) =>
   useQuery<RecommendBooksSuccessResponse, RecommendBooksErrorResponse>({

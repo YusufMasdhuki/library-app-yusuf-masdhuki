@@ -1,40 +1,61 @@
+import BookCard from '@/components/container/book-card';
+import { Button } from '@/components/ui/button';
 import { useGetRecommendedBooks } from '@/hooks/books/useBook';
+import { useNavigate } from 'react-router-dom';
+import CategoriesTabs from './categories-tabs';
+import PopularAuthors from './popular-authors';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  const handleSeeAll = () => {
+    navigate('/book-list-filter'); // navigasi ke halaman book list
+  };
+
   const { data, isLoading, isError, error } = useGetRecommendedBooks({
     limit: 10,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className='h-screen flex items-center justify-center'>
+        Loading...
+      </div>
+    );
   if (isError)
     return <div>Error: {error?.message || 'Something went wrong'}</div>;
 
-  const books = data?.data?.books || []; // perhatikan akses data di data.data.books
+  const books = data?.data?.books || [];
 
   return (
-    <div className='max-w-300 px-4 pt-32 mx-auto mb-29'>
-      <h1 className='text-display-lg font-bold mb-4'>Recommendation</h1>
-      <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+    <div className='max-w-300 px-4 pt-32 mx-auto pb-12'>
+      <img
+        src='/images/hero-image.png'
+        alt='hero image'
+        className='w-full h-full mb-20 object-cover'
+      />
+      <CategoriesTabs />
+      <h1 className='text-display-lg font-bold mb-10 mt-12'>Recommendation</h1>
+      <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-12'>
         {books.map((book) => (
-          <div key={book.id} className='border p-2 rounded shadow'>
-            {book.coverImage ? (
-              <img
-                src={book.coverImage}
-                alt={book.title}
-                className='w-full h-84 object-cover mb-2 rounded'
-              />
-            ) : (
-              <div className='w-full h-84 bg-gray-200 flex items-center justify-center mb-2 rounded'>
-                No Image
-              </div>
-            )}
-            <h2 className='font-semibold'>{book.title}</h2>
-            <p className='text-sm text-gray-500'>{book.author.name}</p>
-            <p className='text-xs text-gray-400'>{book.category.name}</p>
-            <p className='text-sm font-medium mt-1'>Rating: {book.rating}</p>
-          </div>
+          <BookCard
+            key={book.id}
+            id={book.id}
+            title={book.title}
+            coverImage={book.coverImage}
+            authorName={book.author.name}
+            rating={book.rating}
+          />
         ))}
       </div>
+      <Button
+        variant='primaryWhite'
+        className='mx-auto mb-12'
+        onClick={handleSeeAll}
+      >
+        See All Books
+      </Button>
+      <PopularAuthors />
     </div>
   );
 };

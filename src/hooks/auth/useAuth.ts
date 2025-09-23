@@ -9,12 +9,13 @@ import type {
   LoginErrorResponse,
 } from '@/types/auth-type';
 import { loginUser, registerUser } from '@/services/auth/service';
+import type { AxiosError } from 'axios';
 
 // ✅ Hook Register
 export const useRegister = () => {
   return useMutation<
-    RegisterSuccessResponse, // success
-    RegisterErrorResponse, // error
+    RegisterSuccessResponse, // success response
+    AxiosError<RegisterErrorResponse>, // error response (dibungkus AxiosError)
     RegisterRequest // payload
   >({
     mutationFn: registerUser,
@@ -24,9 +25,9 @@ export const useRegister = () => {
 // ✅ Hook Login
 export const useLogin = () => {
   return useMutation<
-    LoginSuccessResponse, // success
-    LoginErrorResponse, // error
-    LoginRequest // payload
+    LoginSuccessResponse,
+    AxiosError<LoginErrorResponse>,
+    LoginRequest
   >({
     mutationFn: loginUser,
   });

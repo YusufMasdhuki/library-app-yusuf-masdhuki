@@ -28,12 +28,16 @@ export interface LoginRequest {
 }
 
 export interface LoginSuccessResponse {
-  token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    role: 'USER' | 'ADMIN';
+  success: true;
+  message: string;
+  data: {
+    token: string;
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      role: 'USER' | 'ADMIN';
+    };
   };
 }
 
