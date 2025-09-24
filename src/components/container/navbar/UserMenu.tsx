@@ -37,7 +37,7 @@ const UserMenu = ({ userName, isLoading, onLogout }: UserMenuProps) => (
         <Link to='/profile'>Profile</Link>
       </DropdownMenuItem>
       <DropdownMenuItem asChild>
-        <Link to='/borrowed'>Borrowed List</Link>
+        <Link to='/borrowed-list'>Borrowed List</Link>
       </DropdownMenuItem>
       <DropdownMenuItem asChild>
         <Link to='/reviews'>Reviews</Link>

@@ -7,7 +7,7 @@ export interface Loan {
   id: number;
   userId: number;
   bookId: number;
-  status: 'BORROWED' | 'RETURNED';
+  status: 'BORROWED' | 'RETURNED' | 'LATE';
   borrowedAt: string; // ISO date
   dueAt: string; // ISO date
   returnedAt: string | null;
@@ -49,7 +49,7 @@ export interface MyLoan {
   id: number;
   userId: number;
   bookId: number;
-  status: 'BORROWED' | 'RETURNED';
+  status: 'BORROWED' | 'RETURNED' | 'LATE';
   borrowedAt: string;
   dueAt: string;
   returnedAt: string | null;

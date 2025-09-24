@@ -11,11 +11,13 @@ interface CartItem {
 interface CartState {
   items: CartItem[];
   selectedIds: number[];
+  checkoutIds: number[];
 }
 
 const initialState: CartState = {
   items: [],
   selectedIds: [],
+  checkoutIds: [],
 };
 
 const cartSlice = createSlice({
@@ -28,15 +30,26 @@ const cartSlice = createSlice({
         state.items.push(action.payload);
       }
     },
+    setCheckoutNow(state, action: PayloadAction<CartItem>) {
+      const exists = state.items.find((i) => i.id === action.payload.id);
+      if (!exists) {
+        state.items.push(action.payload);
+      }
+      state.checkoutIds = [action.payload.id]; // langsung set checkout 1 buku
+    },
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
       state.selectedIds = state.selectedIds.filter(
+        (id) => id !== action.payload
+      );
+      state.checkoutIds = state.checkoutIds.filter(
         (id) => id !== action.payload
       );
     },
     clearCart: (state) => {
       state.items = [];
       state.selectedIds = [];
+      state.checkoutIds = [];
     },
     toggleSelectItem: (state, action: PayloadAction<number>) => {
       if (state.selectedIds.includes(action.payload)) {
@@ -53,6 +66,9 @@ const cartSlice = createSlice({
     deselectAll: (state) => {
       state.selectedIds = [];
     },
+    setCheckoutItems: (state, action: PayloadAction<number[]>) => {
+      state.checkoutIds = action.payload;
+    },
   },
 });
 
@@ -63,6 +79,8 @@ export const {
   toggleSelectItem,
   selectAll,
   deselectAll,
+  setCheckoutItems,
+  setCheckoutNow,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

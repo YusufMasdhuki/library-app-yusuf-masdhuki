@@ -9,14 +9,13 @@ export interface MyReview {
   id: number;
   userId: number;
   bookId: number;
-  rating: number;
+  star: number; // ganti dari rating -> star
   comment: string;
   createdAt: string;
-  updatedAt: string;
   book: {
     id: number;
     title: string;
-    coverImage: string;
+    coverImage: string | null;
   };
 }
 

@@ -3,6 +3,8 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import bookFilterReducer from './slices/bookFilterSlice';
 import cartReducer from './slices/cart-slice';
+import loanSearchReducer from './slices/loan-search-slice';
+import reviewsReducer from './slices/reviewsSlice';
 import {
   persistStore,
   persistReducer,
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   bookFilter: bookFilterReducer,
   cart: cartReducer,
+  loanSearch: loanSearchReducer,
+  reviews: reviewsReducer,
 });
 
 // konfigurasi persist

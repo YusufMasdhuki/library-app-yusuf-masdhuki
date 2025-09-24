@@ -6,11 +6,14 @@ import {
   toggleSelectItem,
   selectAll,
   deselectAll,
+  setCheckoutItems,
 } from '@/store/slices/cart-slice';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const selectedIds = useSelector((state: RootState) => state.cart.selectedIds);
 
@@ -23,12 +26,12 @@ const CartPage = () => {
   };
 
   const handleBorrow = () => {
-    console.log('Borrow books:', selectedIds);
-    // TODO: panggil API borrow di sini
-
-    // misal setelah borrow, hapus dari cart:
-    // selectedIds.forEach((id) => dispatch(removeFromCart(id)));
-    // dispatch(deselectAll());
+    if (selectedIds.length > 0) {
+      // simpan dulu item yang dipilih ke Redux
+      dispatch(setCheckoutItems(selectedIds));
+      // lalu pindah ke halaman checkout
+      navigate('/checkout');
+    }
   };
 
   return (

@@ -39,4 +39,20 @@ export const routes: Router[] = [
     path: '/checkout',
     element: lazy(() => import('../pages/checkoutPage')),
   },
+  {
+    path: '/success',
+    element: lazy(() => import('../pages/successPage')),
+  },
+  {
+    path: '/borrowed-list',
+    element: lazy(() => import('../pages/borrowedList')),
+  },
+  {
+    path: '/reviews',
+    element: lazy(() => import('../pages/reviewsPage')),
+  },
+  {
+    path: '/profile',
+    element: lazy(() => import('../pages/profilePage')),
+  },
 ];
