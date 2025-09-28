@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <div className='flex items-center justify-center py-25 min-h-screen text-neutral-950'>
-      <div className='max-w-100 w-full'>
+      <div className='max-w-100 w-full px-4'>
         {/* Logo */}
         <div className='flex items-center gap-3 mb-5'>
           <img
@@ -57,8 +57,10 @@ const LoginPage = () => {
         </div>
 
         {/* Title */}
-        <h1 className='text-display-sm font-bold mb-2'>Login</h1>
-        <p className='text-md font-semibold text-neutral-700 mb-5'>
+        <h1 className='text-display-xs md:text-display-sm font-bold mb-0.5 md:mb-2'>
+          Login
+        </h1>
+        <p className='text-sm md:text-md font-semibold text-neutral-700 mb-5'>
           Sign in to manage your library account.
         </p>
 
@@ -74,7 +76,7 @@ const LoginPage = () => {
               id='email'
               placeholder='Enter your Email'
               {...register('email')}
-              className='h-12 border border-neutral-300 rounded-xl'
+              className='h-12 border border-neutral-300 rounded-xl text-sm md:text-md font-semibold'
             />
             {errors.email && (
               <p className='text-xs text-red-500'>{errors.email.message}</p>
@@ -100,7 +102,7 @@ const LoginPage = () => {
           </Button>
 
           {/* Register Link */}
-          <p className='text-md font-semibold'>
+          <p className='text-sm md:text-md font-semibold'>
             Don&apos;t have an account?{' '}
             <Link to='/register' className='text-primary-300 font-bold'>
               Register

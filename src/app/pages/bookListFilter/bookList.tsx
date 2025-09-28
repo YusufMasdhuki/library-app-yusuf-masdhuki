@@ -4,6 +4,8 @@ import { useGetBooksInfinite } from '@/hooks/books/useBook';
 import BookCard from '@/components/container/book-card';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import LoadingScreen from '@/components/common/LoadingScreen';
+import ErrorScreen from '@/components/common/ErrorScreen';
 
 const BookList = () => {
   const { categoryId, rating, q } = useSelector(
@@ -45,17 +47,15 @@ const BookList = () => {
     );
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingScreen />;
   if (isError) {
-    const message =
-      error instanceof Error ? error.message : 'Something went wrong';
-    return <div>Error: {message}</div>;
+    return <ErrorScreen message={error?.message} />;
   }
   if (books.length === 0) return <div>No books found</div>;
 
   return (
-    <div className='w-full'>
-      <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
+    <>
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full'>
         {books.map((book) => (
           <BookCard
             key={book.id}
@@ -72,7 +72,7 @@ const BookList = () => {
       <div ref={ref} className='h-10 flex justify-center items-center'>
         {isFetchingNextPage && <span>Loading more...</span>}
       </div>
-    </div>
+    </>
   );
 };
 

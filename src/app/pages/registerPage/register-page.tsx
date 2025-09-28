@@ -32,8 +32,8 @@ const RegisterPage = () => {
       },
       {
         onSuccess: () => {
-          successToast('Register berhasil 🎉');
-          navigate('/login'); // ✅ redirect ke login
+          successToast('Registration successful!');
+          navigate('/login');
         },
         onError: (error: AxiosError<RegisterErrorResponse>) => {
           const message = error?.response?.data?.message || 'Register gagal';
@@ -45,7 +45,7 @@ const RegisterPage = () => {
 
   return (
     <div className='flex items-center justify-center py-25 min-h-screen text-neutral-950'>
-      <div className='max-w-100 w-full'>
+      <div className='max-w-100 w-full px-4'>
         {/* Logo */}
         <div className='flex items-center gap-3 mb-5'>
           <img
@@ -57,8 +57,10 @@ const RegisterPage = () => {
         </div>
 
         {/* Heading */}
-        <h1 className='text-display-sm font-bold mb-2'>Register</h1>
-        <p className='text-md font-semibold text-neutral-700 mb-5'>
+        <h1 className='text-display-xs md:text-display-sm font-bold mb-0.5 md:mb-2'>
+          Register
+        </h1>
+        <p className='text-sm md:text-md font-semibold text-neutral-700 mb-5'>
           Create your account to start borrowing books.
         </p>
 
@@ -73,7 +75,7 @@ const RegisterPage = () => {
               type='text'
               id='name'
               placeholder='Enter your Name'
-              className='h-12 border border-neutral-300 rounded-xl'
+              className='h-12 border border-neutral-300 rounded-xl text-sm md:text-md font-semibold'
               {...register('name')}
             />
             {errors.name && (
@@ -90,7 +92,7 @@ const RegisterPage = () => {
               type='email'
               id='email'
               placeholder='Enter your Email'
-              className='h-12 border border-neutral-300 rounded-xl'
+              className='h-12 border border-neutral-300 rounded-xl text-sm md:text-md font-semibold'
               {...register('email')}
             />
             {errors.email && (
@@ -130,7 +132,7 @@ const RegisterPage = () => {
           </Button>
 
           {/* Link login */}
-          <p className='text-md font-semibold'>
+          <p className='text-sm md:text-md font-semibold'>
             Already have an account?{' '}
             <Link to='/login' className='text-primary-300 font-bold'>
               Login

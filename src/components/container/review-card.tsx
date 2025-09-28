@@ -25,10 +25,10 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           className='size-14.5 md:size-16'
         />
         <div>
-          <p className='font-extrabold text-md md:text-lg text-neutral-950'>
+          <p className='font-bold text-sm md:text-lg text-neutral-950'>
             {review.user.name}
           </p>
-          <p className='text-sm md:text-md text-neutral-950'>
+          <p className='text-sm md:text-md font-medium text-neutral-950'>
             {dayjs(review.createdAt).format('DD MMMM YYYY, HH:mm')}
           </p>
         </div>
@@ -38,7 +38,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           <img key={i} src='/icons/star.svg' alt='star' className='size-6' />
         ))}
       </div>
-      <p className='text-sm md:text-md text-neutral-950'>{review.comment}</p>
+      <p className='text-sm md:text-md font-semibold text-neutral-950'>
+        {review.comment}
+      </p>
     </div>
   );
 };

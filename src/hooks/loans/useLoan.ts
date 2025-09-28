@@ -1,15 +1,16 @@
 // src/hooks/loan/useLoan.ts
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { errorToast, successToast } from '@/lib/toast-helper';
+import { loanService } from '@/services/loans/service';
 import type {
-  GetMyLoansSuccessResponse,
-  GetMyLoansErrorResponse,
+  CreateLoanErrorResponse,
   CreateLoanRequest,
   CreateLoanSuccessResponse,
-  CreateLoanErrorResponse,
-  ReturnLoanSuccessResponse,
+  GetMyLoansErrorResponse,
+  GetMyLoansSuccessResponse,
   ReturnLoanErrorResponse,
+  ReturnLoanSuccessResponse,
 } from '@/types/loan-type';
-import { loanService } from '@/services/loans/service';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // ✅ Get my loans
 export const useGetMyLoans = () =>
@@ -47,6 +48,11 @@ export const useReturnLoan = () => {
     mutationFn: (id: number) => loanService.returnLoan(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myLoans'] });
+      queryClient.invalidateQueries({ queryKey: ['myLoansInfinite'] });
+      successToast('Loan returned successfully');
+    },
+    onError: () => {
+      errorToast('Failed to return loan');
     },
   });
 };

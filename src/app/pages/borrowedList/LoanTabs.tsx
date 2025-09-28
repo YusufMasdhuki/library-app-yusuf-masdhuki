@@ -5,7 +5,7 @@ import {
   getLoanTabsContent,
 } from '@/constants/loan-tabs-data';
 import { LoanCard } from './LoanCard';
-import type { MyLoan } from '@/types/loan-type';
+import { MyLoan } from '@/types/me-loan-type';
 
 interface LoanTabsProps {
   loans: MyLoan[];
@@ -16,9 +16,7 @@ export const LoanTabs = ({ loans }: LoanTabsProps) => {
     loans,
     loans.filter((l) => l.status === 'BORROWED'),
     loans.filter((l) => l.status === 'RETURNED'),
-    loans.filter(
-      (l) => l.status === 'BORROWED' && new Date(l.dueAt) < new Date()
-    )
+    loans.filter((l) => l.status === 'LATE')
   );
 
   const renderLoans = (list: MyLoan[]) =>
@@ -30,7 +28,7 @@ export const LoanTabs = ({ loans }: LoanTabsProps) => {
 
   return (
     <Tabs defaultValue='all'>
-      <TabsList className='flex gap-2'>
+      <TabsList className='flex gap-2 md:gap-3'>
         {loanTabsTrigger.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value} asChild>
             <Button
@@ -51,7 +49,7 @@ export const LoanTabs = ({ loans }: LoanTabsProps) => {
         <TabsContent
           key={tab.value}
           value={tab.value}
-          className='mt-6 space-y-6'
+          className='mt-4 md:mt-6 space-y-4'
         >
           {renderLoans(tab.data)}
         </TabsContent>

@@ -9,7 +9,7 @@ export const LoanSearch = () => {
   const searchTerm = useSelector((state: RootState) => state.loanSearch.term);
 
   return (
-    <div className='relative mb-6'>
+    <div className='relative mb-4 md:mb-6'>
       <Search className='absolute top-1/2 left-4 -translate-y-1/2 size-5 text-neutral-600' />
       <Input
         placeholder='Search book'

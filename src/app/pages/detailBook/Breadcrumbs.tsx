@@ -7,7 +7,7 @@ interface BreadcrumbsProps {
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentTitle }) => {
   return (
-    <div className='mb-6 text-sm font-semibold flex items-center gap-1'>
+    <div className='mb-4 md:mb-6 text-sm font-semibold flex items-center gap-1'>
       <Link to='/' className='flex items-center gap-1 group'>
         <p className='group-hover:underline group-hover:text-primary-300'>
           Home
@@ -20,7 +20,9 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentTitle }) => {
         </p>
         <ChevronRight className='size-4 group-hover:text-primary-300' />
       </Link>
-      <span className='font-bold text-neutral-800'>{currentTitle}</span>
+      <span className='font-bold text-neutral-800 line-clamp-1'>
+        {currentTitle}
+      </span>
     </div>
   );
 };

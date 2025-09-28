@@ -1,15 +1,22 @@
 // src/hooks/review/useReview.ts
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { errorToast, successToast } from '@/lib/toast-helper';
+import { reviewService } from '@/services/reviews/service';
+import { GetMyReviewsSuccessResponse } from '@/types/me-review-type';
 import type {
+  CreateReviewErrorResponse,
   CreateReviewPayload,
   CreateReviewSuccessResponse,
-  CreateReviewErrorResponse,
-  GetBookReviewsSuccessResponse,
-  GetBookReviewsErrorResponse,
-  DeleteReviewSuccessResponse,
   DeleteReviewErrorResponse,
+  DeleteReviewSuccessResponse,
+  GetBookReviewsErrorResponse,
+  GetBookReviewsSuccessResponse,
 } from '@/types/review-type';
-import { reviewService } from '@/services/reviews/service';
+import {
+  InfiniteData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 // ✅ Get reviews for a book
 export const useGetBookReviews = (
@@ -40,19 +47,68 @@ export const useCreateReview = (bookId: number) => {
   });
 };
 
-// ✅ Delete a review
-export const useDeleteReview = (bookId: number) => {
+export const useDeleteReview = (bookId?: number) => {
   const queryClient = useQueryClient();
 
   return useMutation<
-    DeleteReviewSuccessResponse,
-    DeleteReviewErrorResponse,
-    number
+    DeleteReviewSuccessResponse, // success
+    DeleteReviewErrorResponse, // error
+    number, // variables (reviewId)
+    { prevData?: InfiniteData<GetMyReviewsSuccessResponse> } // context
   >({
-    mutationFn: (reviewId: number) => reviewService.deleteReview(reviewId),
+    mutationFn: (reviewId) => reviewService.deleteReview(reviewId),
+
+    onMutate: async (reviewId) => {
+      // cancel semua query dengan key "myReviewsInfinite"
+      await queryClient.cancelQueries({ queryKey: ['myReviewsInfinite'] });
+
+      // ambil data lama
+      const prevData = queryClient.getQueryData<
+        InfiniteData<GetMyReviewsSuccessResponse>
+      >(['myReviewsInfinite']);
+
+      if (prevData) {
+        // update optimistik: hapus review dari semua page
+        queryClient.setQueryData<InfiniteData<GetMyReviewsSuccessResponse>>(
+          ['myReviewsInfinite'],
+          {
+            ...prevData,
+            pages: prevData.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                reviews: page.data.reviews.filter((r) => r.id !== reviewId),
+                pagination: {
+                  ...page.data.pagination,
+                  total: page.data.pagination.total - 1, // update total count
+                },
+              },
+            })),
+          }
+        );
+      }
+
+      return { prevData };
+    },
+
     onSuccess: () => {
-      // Refresh reviews for this book
-      queryClient.invalidateQueries({ queryKey: ['bookReviews', bookId] });
+      successToast('Review deleted successfully');
+    },
+
+    onError: (_err, _reviewId, ctx) => {
+      // rollback kalau gagal
+      if (ctx?.prevData) {
+        queryClient.setQueryData(['myReviewsInfinite'], ctx.prevData);
+      }
+      errorToast('Failed to delete review');
+    },
+
+    onSettled: () => {
+      // selalu refresh supaya data pasti sync
+      queryClient.invalidateQueries({ queryKey: ['myReviewsInfinite'] });
+      if (bookId) {
+        queryClient.invalidateQueries({ queryKey: ['bookReviews', bookId] });
+      }
     },
   });
 };

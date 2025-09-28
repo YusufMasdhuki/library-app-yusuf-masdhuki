@@ -1,5 +1,11 @@
 // src/hooks/me/useMe.ts
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+  InfiniteData,
+} from '@tanstack/react-query';
 import type {
   GetMeSuccessResponse,
   GetMeErrorResponse,
@@ -47,15 +53,43 @@ export const useUpdateMe = () => {
 };
 
 // ✅ Get current user's loans
-export const useGetMyLoans = (params?: GetMyLoansParams) =>
-  useQuery<GetMyLoansSuccessResponse, GetMyLoansErrorResponse>({
-    queryKey: ['myLoans', params],
-    queryFn: () => meService.getMyLoans(params),
+export const useGetMyLoansInfinite = (
+  params?: Omit<GetMyLoansParams, 'page'>
+) =>
+  useInfiniteQuery<
+    GetMyLoansSuccessResponse, // TQueryFnData
+    GetMyLoansErrorResponse, // TError
+    InfiniteData<GetMyLoansSuccessResponse>, // TData (default sama aja)
+    [string, typeof params], // TQueryKey
+    number // TPageParam
+  >({
+    queryKey: ['myLoansInfinite', params],
+    queryFn: ({ pageParam = 1 }) =>
+      meService.getMyLoans({ ...params, page: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.data.pagination;
+      return page < totalPages ? page + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
 
 // ✅ Get current user's reviews
-export const useGetMyReviews = (params?: GetMyReviewsParams) =>
-  useQuery<GetMyReviewsSuccessResponse, GetMyReviewsErrorResponse>({
-    queryKey: ['myReviews', params],
-    queryFn: () => meService.getMyReviews(params),
+export const useGetMyReviewsInfinite = (
+  params?: Omit<GetMyReviewsParams, 'page'>
+) =>
+  useInfiniteQuery<
+    GetMyReviewsSuccessResponse, // TQueryFnData
+    GetMyReviewsErrorResponse, // TError
+    InfiniteData<GetMyReviewsSuccessResponse>, // TData
+    [string, typeof params], // TQueryKey
+    number // TPageParam
+  >({
+    queryKey: ['myReviewsInfinite', params],
+    queryFn: ({ pageParam = 1 }) =>
+      meService.getMyReviews({ ...params, page: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.data.pagination;
+      return page < totalPages ? page + 1 : undefined;
+    },
+    initialPageParam: 1,
   });

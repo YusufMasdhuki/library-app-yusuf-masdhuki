@@ -1,12 +1,14 @@
+import { ReturnConfirmDialog } from '@/components/container/ReturnConfirmDialog';
+import { ReviewDialog } from '@/components/container/ReviewDialog';
 import { Button } from '@/components/ui/button';
-import dayjs from 'dayjs';
-import type { MyLoan } from '@/types/loan-type';
 import { useGetBookDetail } from '@/hooks/books/useBook';
 import { useReturnLoan } from '@/hooks/loans/useLoan';
-import { ReviewDialog } from '@/components/container/ReviewDialog';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useGetMe } from '@/hooks/me/useMe';
+import type { MyLoan } from '@/types/loan-type';
+import clsx from 'clsx';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface LoanCardProps {
   loan: MyLoan;
@@ -22,7 +24,6 @@ export const LoanCard = ({ loan }: LoanCardProps) => {
   const authorName = bookDetail?.data.author.name ?? 'Unknown Author';
   const categoryName = bookDetail?.data.category.name ?? 'Unknown Category';
 
-  // cek apakah user sudah review
   const currentUserId = me?.data.profile.id;
   const hasReviewed = bookDetail?.data.reviews.some(
     (r) => r.userId === currentUserId
@@ -31,72 +32,78 @@ export const LoanCard = ({ loan }: LoanCardProps) => {
   return (
     <div
       key={loan.id}
-      className='rounded-2xl p-5 shadow-[0_0_20px_rgba(203,202,202,0.25)]'
+      className='rounded-2xl p-4 md:p-5 shadow-[0_0_20px_rgba(203,202,202,0.25)]'
     >
       {/* Status + Due Date */}
-      <div className='flex gap-4 justify-between border-b border-neutral-300 pb-5'>
-        <div className='flex items-center gap-3'>
-          <span>Status</span>
+      <div className='flex gap-4 items-center justify-between flex-wrap border-b border-neutral-300 pb-4 md:pb-5'>
+        <div className='flex items-center gap-1 md:gap-3'>
+          <span className='font-bold text-sm md:text-md'>Status</span>
           <span
-            className={`rounded-xs h-8 px-2 flex items-center justify-center ${
-              loan.status === 'BORROWED'
-                ? 'text-[#24A500] bg-[#24A5000D]'
-                : loan.status === 'LATE'
-                ? 'text-[#EE1D52] bg-[#EE1D521A]'
-                : 'text-gray-500 bg-gray-100'
-            }`}
+            className={clsx(
+              'rounded-xs h-8 px-2 flex items-center justify-center text-sm font-bold',
+              (loan.status === 'BORROWED' || loan.status === 'RETURNED') &&
+                'text-[#24A500] bg-[#24A5000D]',
+              loan.status === 'LATE' && 'text-[#EE1D52] bg-[#EE1D521A]'
+            )}
           >
             {loan.status}
           </span>
         </div>
-        <div className='flex items-center gap-3'>
-          <span>Due Date</span>
-          <span className='text-[#EE1D52] bg-[#EE1D521A] rounded-xs h-8 px-2 flex items-center justify-center'>
+        <div className='flex items-center gap-1 md:gap-3'>
+          <span className='font-bold text-sm md:text-md'>Due Date</span>
+          <span className='text-[#EE1D52] bg-[#EE1D521A] rounded-xs h-8 px-2 flex items-center justify-center text-sm font-bold'>
             {dayjs(loan.dueAt).format('DD MMM YYYY')}
           </span>
         </div>
       </div>
 
       {/* Book info */}
-      <div className='flex items-center justify-between mt-5'>
-        <div className='flex items-center gap-4'>
+      <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 mt-4 md:mt-5'>
+        <Link
+          to={`/detail-book/${loan.book.id}`}
+          className='flex items-center gap-4'
+        >
           {loan.book.coverImage ? (
             <img
               src={loan.book.coverImage}
               alt={loan.book.title}
-              className='w-16 h-20 object-cover rounded'
+              className='w-17.5 md:w-23 h-[106px] md:h-[138px] object-cover object-center'
             />
           ) : (
-            <div className='w-16 h-20 bg-gray-200 flex items-center justify-center'>
+            <div className='w-17.5 md:w-23 h-[106px] md:h-[138px] text-xs md:text-sm bg-gray-200 flex items-center justify-center'>
               No Image
             </div>
           )}
-          <div>
-            <span className='text-sm text-gray-500'>{categoryName}</span>
-            <h3 className='font-bold'>{loan.book.title}</h3>
-            <p className='text-sm text-gray-600'>
+          <div className='flex flex-col gap-1'>
+            <p className='inline-block text-sm font-bold rounded-sm px-2 max-w-max h-7 border border-neutral-300'>
+              {categoryName}
+            </p>
+            <h3 className='text-md md:text-xl font-bold line-clamp-1'>
+              {loan.book.title}
+            </h3>
+            <p className='text-sm md:text-md font-medium text-neutral-700'>
               {isLoading ? 'Loading...' : authorName}
             </p>
-            <span className='text-sm text-gray-500'>
+            <span className='text-sm md:text-md font-bold'>
               {dayjs(loan.borrowedAt).format('DD MMM YYYY')} • Duration{' '}
               {dayjs(loan.dueAt).diff(dayjs(loan.borrowedAt), 'day')} days
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Actions */}
         {loan.status === 'RETURNED' && (
           <>
             {hasReviewed ? (
               <Button
-                className='h-10 w-[182px]'
+                className='h-10 w-full md:max-w-[182px] bg-neutral-700 hover:bg-neutral-600'
                 onClick={() => navigate('/reviews')}
               >
                 See Review
               </Button>
             ) : (
               <Button
-                className='h-10 w-[182px]'
+                className='h-10 w-full md:max-w-[182px]'
                 onClick={() => setOpenReview(true)}
               >
                 Give Review
@@ -112,13 +119,18 @@ export const LoanCard = ({ loan }: LoanCardProps) => {
         )}
 
         {(loan.status === 'BORROWED' || loan.status === 'LATE') && (
-          <Button
-            className='h-10 w-[182px]'
-            disabled={isPending}
-            onClick={() => returnLoan(loan.id)}
-          >
-            {isPending ? 'Returning...' : 'Return Book'}
-          </Button>
+          <ReturnConfirmDialog
+            isPending={isPending}
+            onConfirm={() => returnLoan(loan.id)}
+            trigger={
+              <Button
+                className='h-10 w-full md:max-w-[182px]'
+                disabled={isPending}
+              >
+                Return Book
+              </Button>
+            }
+          />
         )}
       </div>
     </div>

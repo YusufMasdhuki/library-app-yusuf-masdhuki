@@ -18,7 +18,7 @@ export const ProfileTabs = () => {
               variant='tabsPrimary'
               size='tabsPrimary'
               className={clsx(
-                'w-full',
+                'w-full px-0 md:px-3',
                 isActive ? 'bg-white' : 'font-medium text-neutral-600'
               )}
             >

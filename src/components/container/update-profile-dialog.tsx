@@ -66,7 +66,9 @@ export const UpdateProfileDialog = ({
               className='bg-white rounded-2xl p-4 md:p-6 shadow-xl'
             >
               <DialogHeader>
-                <DialogTitle>Update Profile</DialogTitle>
+                <DialogTitle className='text-md md:text-lg font-bold mb-3'>
+                  Update Profile
+                </DialogTitle>
               </DialogHeader>
 
               <form
@@ -74,7 +76,9 @@ export const UpdateProfileDialog = ({
                 className='space-y-4'
               >
                 <div>
-                  <label className='block text-sm font-medium mb-1'>Name</label>
+                  <label className='block text-sm font-semibold mb-1'>
+                    Name
+                  </label>
                   <Input {...form.register('name')} disabled={isPending} />
                   {form.formState.errors.name && (
                     <p className='text-red-500 text-sm mt-1'>

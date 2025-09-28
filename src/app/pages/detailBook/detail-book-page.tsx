@@ -8,6 +8,8 @@ import Breadcrumbs from './Breadcrumbs';
 import BookInfoSection from './BookInfoSection';
 import ReviewsSection from './ReviewsSection';
 import RelatedBooksSection from './RelatedBooksSection';
+import LoadingScreen from '@/components/common/LoadingScreen';
+import ErrorScreen from '@/components/common/ErrorScreen';
 
 const DetailBook = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,13 +28,12 @@ const DetailBook = () => {
   });
   const recommendedBooks = recommendedData?.data?.books || [];
 
-  if (isLoading) return <div>Loading book details...</div>;
-  if (isError)
-    return <div>Error: {error?.message || 'Something went wrong'}</div>;
+  if (isLoading) return <LoadingScreen />;
+  if (isError) return <ErrorScreen message={error?.message} />;
   if (!book) return <div>No book found</div>;
 
   return (
-    <div className='py-32'>
+    <div className='pt-20 pb-12 md:py-32'>
       <div className='max-w-300 mx-auto px-4'>
         <Breadcrumbs currentTitle={book.title} />
         <BookInfoSection book={book} />

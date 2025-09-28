@@ -27,18 +27,19 @@ const BookFilter = () => {
   const handleResetRating = () => dispatch(setRating(undefined));
 
   return (
-    <div className='w-[266px] shadow-[0_0_20px_rgba(203,202,202,0.25)] p-4 rounded-xl'>
+    <div className='w-full md:w-[266px] md:shadow-[0_0_20px_rgba(203,202,202,0.25)] p-4 rounded-xl'>
       <h2 className='font-bold text-md'>FILTER</h2>
 
       {/* Category */}
-      <div className='pt-2.5 pb-3 md:pb-6'>
-        <div className='flex justify-between items-center'>
+      <div className='pt-2.5 pb-3 md:pb-6 border-b border-neutral-300'>
+        <div className='flex justify-between items-center pb-2.5'>
           <h3 className='text-md md:text-lg font-extrabold text-neutral-950'>
             Category
           </h3>
           <Button
             variant='link'
-            className='text-sm font-medium text-red-500 hover:underline'
+            size='sm'
+            className='text-sm font-medium text-red-500 hover:underline h-8'
             onClick={handleResetCategory}
           >
             Reset
@@ -50,7 +51,7 @@ const BookFilter = () => {
         ) : isError ? (
           <p>Error loading categories</p>
         ) : (
-          <div className='flex flex-col gap-2 mt-2'>
+          <div className='flex flex-col gap-2.5'>
             {categories.map((cat) => (
               <label
                 key={cat.id}
@@ -72,25 +73,26 @@ const BookFilter = () => {
       </div>
 
       {/* Rating */}
-      <div className='flex flex-col gap-2.5 py-3 md:py-6'>
+      <div className='flex flex-col gap-2.5 pt-3 md:pt-6'>
         <div className='flex justify-between items-center'>
           <h4 className='text-md md:text-lg font-extrabold text-neutral-950'>
             Rating
           </h4>
           <Button
             variant='link'
-            className='text-sm font-medium text-red-500 hover:underline'
+            size='sm'
+            className='text-sm font-medium text-red-500 hover:underline h-8'
             onClick={handleResetRating}
           >
             Reset
           </Button>
         </div>
 
-        <div className='flex flex-col gap-2 mt-2'>
+        <div className='flex flex-col'>
           {RATING.map((rating) => (
             <label
               key={rating.value}
-              className='flex gap-1 items-center cursor-pointer'
+              className='flex gap-1 items-center cursor-pointer text-md py-2'
             >
               <input
                 type='radio'
