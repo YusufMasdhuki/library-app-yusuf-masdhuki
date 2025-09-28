@@ -1,18 +1,36 @@
 import { useEffect } from 'react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import BookFilter from './book-filter';
 import BookList from './bookList';
 import { useIsMobile } from '@/lib/use-is-mobile';
 import { ListFilter } from 'lucide-react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import { setCategory } from '@/store/slices/bookFilterSlice';
 
 const BookListFilterPage = () => {
   const isMobile = useIsMobile();
+  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // ✅ Ambil category dari query param
+  useEffect(() => {
+    const categoryId = searchParams.get('categoryId');
+    if (categoryId) {
+      dispatch(setCategory(Number(categoryId)));
+    }
+  }, [searchParams, dispatch]);
   return (
     <div className='pt-20 pb-12 md:py-32'>
       <div className='max-w-300 w-full mx-auto px-4'>
@@ -22,7 +40,6 @@ const BookListFilterPage = () => {
 
         <div className='flex flex-col md:flex-row w-full gap-0 md:gap-10'>
           {isMobile ? (
-            // Mobile: pakai Sheet
             <Sheet>
               <SheetTrigger asChild>
                 <Button
@@ -33,11 +50,13 @@ const BookListFilterPage = () => {
                 </Button>
               </SheetTrigger>
               <SheetContent side='left' className='w-3/4'>
+                <VisuallyHidden>
+                  <SheetTitle>Filter Buku</SheetTitle>
+                </VisuallyHidden>
                 <BookFilter />
               </SheetContent>
             </Sheet>
           ) : (
-            // Desktop: tampil biasa
             <div>
               <BookFilter />
             </div>

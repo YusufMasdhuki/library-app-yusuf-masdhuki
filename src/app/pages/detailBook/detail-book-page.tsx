@@ -17,7 +17,7 @@ const DetailBook = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [bookId]);
 
   const { data, isLoading, isError, error } = useGetBookDetail(bookId);
   const book = data?.data;
@@ -35,7 +35,7 @@ const DetailBook = () => {
   return (
     <div className='pt-20 pb-12 md:py-32'>
       <div className='max-w-300 mx-auto px-4'>
-        <Breadcrumbs currentTitle={book.title} />
+        <Breadcrumbs currentTitle={book.title} category={book.category} />
         <BookInfoSection book={book} />
         <ReviewsSection
           reviews={book.reviews}

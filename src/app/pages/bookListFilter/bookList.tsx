@@ -8,7 +8,7 @@ import LoadingScreen from '@/components/common/LoadingScreen';
 import ErrorScreen from '@/components/common/ErrorScreen';
 
 const BookList = () => {
-  const { categoryId, rating, q } = useSelector(
+  const { categoryId, rating, q, authorId } = useSelector(
     (state: RootState) => state.bookFilter
   );
 
@@ -20,7 +20,12 @@ const BookList = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetBooksInfinite({ limit: 10 });
+  } = useGetBooksInfinite({
+    limit: 10,
+    q,
+    categoryId,
+    authorId,
+  });
 
   const { ref, inView } = useInView({ threshold: 1 });
 
@@ -63,6 +68,7 @@ const BookList = () => {
             title={book.title}
             coverImage={book.coverImage}
             authorName={book.author.name}
+            authorId={book.author.id}
             rating={book.rating}
           />
         ))}

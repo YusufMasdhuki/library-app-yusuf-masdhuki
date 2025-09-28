@@ -6,7 +6,7 @@ import { Book } from '@/types/book-type';
 import clsx from 'clsx';
 import { Share2 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface BookInfoSectionProps {
   book: Book;
@@ -65,7 +65,12 @@ const BookInfoSection: React.FC<BookInfoSectionProps> = ({ book }) => {
           {book.title}
         </h1>
         <p className='mb-0.5 md:mb-1 text-sm md:text-md font-semibold text-neutral-700'>
-          {book.author.name}
+          <Link
+            to={`/book-by-author/${book.author.id}`}
+            className='hover:text-primary-300 transition-all duration-300 ease-out'
+          >
+            {book.author.name}
+          </Link>
         </p>
         <div className='text-md font-bold flex items-center gap-0.5 mb-3 md:mb-5'>
           <img src='/icons/star.svg' alt='star' className='size-6' />

@@ -6,6 +6,7 @@ interface BookCardProps {
   title: string;
   coverImage?: string | null;
   authorName: string;
+  authorId: number;
   rating: number;
 }
 
@@ -15,6 +16,7 @@ const BookCard: React.FC<BookCardProps> = ({
   coverImage,
   authorName,
   rating,
+  authorId,
 }) => {
   return (
     <Link
@@ -37,7 +39,13 @@ const BookCard: React.FC<BookCardProps> = ({
       <div className='p-3 md:p-4 text-neutral-900 flex flex-col gap-0.5 md:gap-1 w-full'>
         <h2 className='font-bold text-sm md:text-lg line-clamp-1'>{title}</h2>
         <p className='text-sm md:text-md font-medium text-neutral-700'>
-          {authorName}
+          <Link
+            to={`/book-by-author/${authorId}`}
+            className='hover:text-primary-300 transition-all transition-duration-300 ease-out'
+            onClick={(e) => e.stopPropagation()}
+          >
+            {authorName}
+          </Link>
         </p>
         <div className='flex items-center gap-0.5'>
           <img src='/icons/star.svg' alt='star' className='size-6' />

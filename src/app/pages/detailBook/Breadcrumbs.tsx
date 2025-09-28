@@ -3,9 +3,13 @@ import { ChevronRight } from 'lucide-react';
 
 interface BreadcrumbsProps {
   currentTitle: string;
+  category?: { id: number; name: string }; // ✅ tambahan
 }
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentTitle }) => {
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
+  currentTitle,
+  category,
+}) => {
   return (
     <div className='mb-4 md:mb-6 text-sm font-semibold flex items-center gap-1'>
       <Link to='/' className='flex items-center gap-1 group'>
@@ -14,12 +18,19 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentTitle }) => {
         </p>
         <ChevronRight className='size-4 group-hover:text-primary-300' />
       </Link>
-      <Link to='/book-list-filter' className='flex items-center gap-1 group'>
-        <p className='group-hover:underline group-hover:text-primary-300'>
-          Category
-        </p>
-        <ChevronRight className='size-4 group-hover:text-primary-300' />
-      </Link>
+
+      {category && (
+        <Link
+          to={`/book-list-filter?categoryId=${category.id}`}
+          className='flex items-center gap-1 group'
+        >
+          <p className='group-hover:underline group-hover:text-primary-300'>
+            {category.name}
+          </p>
+          <ChevronRight className='size-4 group-hover:text-primary-300' />
+        </Link>
+      )}
+
       <span className='font-bold text-neutral-800 line-clamp-1'>
         {currentTitle}
       </span>

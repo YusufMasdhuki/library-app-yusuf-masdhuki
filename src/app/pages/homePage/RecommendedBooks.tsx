@@ -27,6 +27,7 @@ const RecommendedBooks = () => {
             title={book.title}
             coverImage={book.coverImage}
             authorName={book.author.name}
+            authorId={book.author.id}
             rating={book.rating}
           />
         ))}

@@ -27,7 +27,7 @@ const BookFilter = () => {
   const handleResetRating = () => dispatch(setRating(undefined));
 
   return (
-    <div className='w-full md:w-[266px] md:shadow-[0_0_20px_rgba(203,202,202,0.25)] p-4 rounded-xl'>
+    <div className='w-full md:w-[266px] md:shadow-[0_0_20px_rgba(203,202,202,0.25)] p-4 rounded-xl overflow-y-auto'>
       <h2 className='font-bold text-md'>FILTER</h2>
 
       {/* Category */}

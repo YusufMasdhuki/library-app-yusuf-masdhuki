@@ -57,6 +57,7 @@ const BookByAuthorPage = () => {
                 coverImage={book.coverImage}
                 authorName={author.name}
                 rating={book.rating}
+                authorId={author.id}
               />
             ))}
           </div>
