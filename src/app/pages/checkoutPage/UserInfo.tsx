@@ -1,9 +1,6 @@
-interface UserInfoProps {
-  name?: string;
-  email?: string;
-}
+import { UserInfoProps } from './helper';
 
-export const UserInfo = ({ name, email }: UserInfoProps) => {
+export const UserInfo: React.FC<UserInfoProps> = ({ name, email }) => {
   return (
     <div className='flex flex-col gap-2 md:gap-4 pb-4 md:pb-8 border-b border-neutral-300'>
       <h2 className='text-lg md:text-display-xs font-bold'>User Information</h2>

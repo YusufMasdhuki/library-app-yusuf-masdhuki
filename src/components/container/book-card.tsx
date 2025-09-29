@@ -1,14 +1,6 @@
+import { BookCardProps } from '@/interfaces/BookCardProps';
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-interface BookCardProps {
-  id: number;
-  title: string;
-  coverImage?: string | null;
-  authorName: string;
-  authorId: number;
-  rating: number;
-}
 
 const BookCard: React.FC<BookCardProps> = ({
   id,

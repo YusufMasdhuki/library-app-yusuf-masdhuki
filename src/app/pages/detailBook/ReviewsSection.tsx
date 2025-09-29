@@ -1,11 +1,5 @@
 import ReviewCard from '@/components/container/review-card';
-import { BookReview } from '@/types/review-type';
-
-interface ReviewsSectionProps {
-  reviews: BookReview[];
-  rating: number;
-  reviewCount: number;
-}
+import { ReviewsSectionProps } from './helper';
 
 const ReviewsSection: React.FC<ReviewsSectionProps> = ({
   reviews,

@@ -8,22 +8,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { DeleteReviewDialogProps } from '@/interfaces/DeleteReviewDialogProps';
-import { AnimatePresence, motion } from 'framer-motion';
+import { LogoutConfirmDialogProps } from '@/interfaces/LogoutConfirmDialogProps';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 
-export const DeleteReviewDialog: React.FC<DeleteReviewDialogProps> = ({
+export const LogoutConfirmDialog: React.FC<LogoutConfirmDialogProps> = ({
   trigger,
-  isPending,
   onConfirm,
-  bookTitle,
 }) => {
   const [open, setOpen] = useState(false);
-
-  const handleConfirm = async () => {
-    await onConfirm();
-    setOpen(false);
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -40,28 +33,26 @@ export const DeleteReviewDialog: React.FC<DeleteReviewDialogProps> = ({
           >
             <DialogHeader>
               <DialogTitle className='text-md md:text-lg font-bold mb-3'>
-                Delete Review
+                Logout Confirmation
               </DialogTitle>
               <DialogDescription className='text-sm md:text-md font-semibold mb-4'>
-                Are you sure you want to delete your review for{' '}
-                <span className='font-bold text-primary-300'>{bookTitle}</span>?
-                This action cannot be undone.
+                Are you sure you want to log out of this account? You need to
+                log back in to continue.
               </DialogDescription>
             </DialogHeader>
-            <DialogFooter>
+            <DialogFooter className='flex gap-3 justify-end'>
               <Button
                 variant='primaryWhite'
-                onClick={() => setOpen(false)}
                 className='w-full'
+                onClick={() => setOpen(false)}
               >
                 Cancel
               </Button>
               <Button
-                className='bg-red-600 hover:bg-red-700 w-full'
-                disabled={isPending}
-                onClick={handleConfirm}
+                onClick={onConfirm}
+                className='bg-accent-red hover:bg-accent-red/90 w-full'
               >
-                {isPending ? 'Deleting...' : 'Confirm'}
+                Logout
               </Button>
             </DialogFooter>
           </motion.div>

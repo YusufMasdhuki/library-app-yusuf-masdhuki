@@ -1,11 +1,14 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/store';
-import { useNavigate } from 'react-router-dom';
-import { useGetMe } from '@/hooks/me/useMe';
 import { useCreateLoan } from '@/hooks/loans/useLoan';
+import { useGetMe } from '@/hooks/me/useMe';
+import { errorToast, successToast } from '@/lib/toast-helper';
+import { RootState } from '@/store';
 import { clearCart } from '@/store/slices/cart-slice';
-import { useState } from 'react';
+import { CreateLoanErrorResponse } from '@/types/loan-type';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export function useCheckout() {
   const dispatch = useDispatch();
@@ -32,9 +35,12 @@ export function useCheckout() {
       dispatch(clearCart());
 
       const returnDate = dayjs().add(duration, 'day').format('DD MMMM YYYY');
+      successToast('Borrow successful!');
       navigate('/success', { state: { returnDate } });
     } catch (error) {
-      console.error('Borrow failed:', error);
+      const axiosError = error as AxiosError<CreateLoanErrorResponse>;
+      const msg = axiosError.response?.data?.message ?? 'Borrow failed';
+      errorToast(msg);
     }
   };
 

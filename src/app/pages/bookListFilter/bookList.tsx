@@ -1,11 +1,11 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { useGetBooksInfinite } from '@/hooks/books/useBook';
-import BookCard from '@/components/container/book-card';
-import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
-import LoadingScreen from '@/components/common/LoadingScreen';
 import ErrorScreen from '@/components/common/ErrorScreen';
+import BookCard from '@/components/container/book-card';
+import BookListFilterLoading from '@/components/common/skeleton/book-list-filter-loading';
+import { useGetBooksInfinite } from '@/hooks/books/useBook';
+import { RootState } from '@/store';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
 
 const BookList = () => {
   const { categoryId, rating, q, authorId } = useSelector(
@@ -52,7 +52,7 @@ const BookList = () => {
     );
   }
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) return <BookListFilterLoading />;
   if (isError) {
     return <ErrorScreen message={error?.message} />;
   }

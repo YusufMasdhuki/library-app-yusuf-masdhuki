@@ -22,7 +22,7 @@ export const buttonVariants = cva(
         default: 'h-11 md:h-12 px-4',
         sm: 'h-8',
         lg: 'h-10 md:h-11',
-        icon: 'h-10 w-10 md:h-11 md:w-11',
+        icon: 'h-10 w-10 md:h-11 md:w-11 aspect-square',
         tabsPrimary: 'h-10 w-full',
         primaryWhite: 'h-10 px-4',
       },

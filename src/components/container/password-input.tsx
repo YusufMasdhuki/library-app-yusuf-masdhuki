@@ -2,13 +2,12 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Input } from '../ui/input';
+import { PasswordInputProps } from '@/interfaces/PasswordInputProps';
 
-interface PasswordInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: string;
-}
-
-export const PasswordInput = ({ error, ...props }: PasswordInputProps) => {
+export const PasswordInput: React.FC<PasswordInputProps> = ({
+  error,
+  ...props
+}) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -21,7 +20,7 @@ export const PasswordInput = ({ error, ...props }: PasswordInputProps) => {
       <button
         type='button'
         onClick={() => setShow(!show)}
-        className='absolute right-3 top-6 -translate-y-1/2 text-neutral-500 hover:text-neutral-700'
+        className='absolute right-3 top-6 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 cursor-pointer'
         tabIndex={-1}
       >
         {show ? <EyeOff size={20} /> : <Eye size={20} />}

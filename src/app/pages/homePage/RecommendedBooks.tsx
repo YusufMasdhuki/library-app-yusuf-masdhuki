@@ -1,14 +1,14 @@
 import ErrorScreen from '@/components/common/ErrorScreen';
-import LoadingScreen from '@/components/common/LoadingScreen';
 import BookCard from '@/components/container/book-card';
+import RecommendedLoading from '@/components/common/skeleton/recommended-loading';
 import { useGetRecommendedBooks } from '@/hooks/books/useBook';
 
 const RecommendedBooks = () => {
   const { data, isLoading, isError, error } = useGetRecommendedBooks({
-    limit: 50,
+    limit: 20,
   });
 
-  if (isLoading) return <LoadingScreen className='min-h-20' />;
+  if (isLoading) return <RecommendedLoading />;
   if (isError)
     return <ErrorScreen message={error?.message} className='min-h-20' />;
 

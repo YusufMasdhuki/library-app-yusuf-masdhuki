@@ -1,4 +1,3 @@
-// ReviewDialog.tsx
 import {
   Dialog,
   DialogContent,
@@ -14,12 +13,8 @@ import Star from '../icons/star';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCreateReview } from '@/hooks/reviews/useReview';
 import { errorToast, successToast } from '@/lib/toast-helper';
-
-interface ReviewDialogProps {
-  open: boolean;
-  onClose: () => void;
-  bookId: number;
-}
+import clsx from 'clsx';
+import { ReviewDialogProps } from '@/interfaces/ReviewDialogProps';
 
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   open,
@@ -87,9 +82,10 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                       key={val}
                       type='button'
                       onClick={() => setStar(val)}
-                      className={
+                      className={clsx(
+                        'cursor-pointer',
                         val <= star ? 'text-yellow-500' : 'text-gray-300'
-                      }
+                      )}
                     >
                       <Star className='size-10 md:size-12' />
                     </button>
@@ -102,7 +98,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                 placeholder='Please share your thoughts about this book'
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className='min-h-[200px] mb-6 text-sm md:text-md'
+                className='min-h-[200px] mb-6 text-sm md:text-md font-medium'
               />
 
               <DialogFooter>

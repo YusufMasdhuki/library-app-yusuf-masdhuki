@@ -2,15 +2,11 @@ import { Button } from '@/components/ui/button';
 import { getBookStats } from '@/constants/stats';
 import { useIsMobile } from '@/lib/use-is-mobile';
 import { addToCart, setCheckoutNow } from '@/store/slices/cart-slice';
-import { Book } from '@/types/book-type';
 import clsx from 'clsx';
 import { Share2 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-
-interface BookInfoSectionProps {
-  book: Book;
-}
+import { BookInfoSectionProps } from './helper';
 
 const BookInfoSection: React.FC<BookInfoSectionProps> = ({ book }) => {
   const dispatch = useDispatch();
@@ -97,13 +93,13 @@ const BookInfoSection: React.FC<BookInfoSectionProps> = ({ book }) => {
         {!isMobile && (
           <div className='flex items-center gap-3 mt-5'>
             <Button
-              className='w-full max-w-50'
+              className='w-full max-w-50 px-0'
               variant='primaryWhite'
               onClick={handleAddToCart}
             >
               Add to Cart
             </Button>
-            <Button className='w-full max-w-50' onClick={handleBorrowNow}>
+            <Button className='w-full max-w-50 px-0' onClick={handleBorrowNow}>
               Borrow Book
             </Button>
             <Button size='icon' variant='primaryWhite'>

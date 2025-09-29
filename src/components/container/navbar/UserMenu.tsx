@@ -10,6 +10,7 @@ import { ChevronDown, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { LogoutConfirmDialog } from '../LogoutConfirmDialog';
 
 interface UserMenuProps {
   userName?: string;
@@ -77,16 +78,22 @@ const UserMenu = ({ userName, isLoading, onLogout }: UserMenuProps) => {
                   Reviews
                 </Button>
               </Link>
-              <Button
-                onClick={() => {
+
+              {/* Logout dengan confirm dialog */}
+              <LogoutConfirmDialog
+                trigger={
+                  <Button
+                    variant='tabsPrimary'
+                    className='w-full justify-start text-red-500 px-0 h-7.5'
+                  >
+                    Logout
+                  </Button>
+                }
+                onConfirm={() => {
                   onLogout();
                   setMobileOpen(false);
                 }}
-                variant='tabsPrimary'
-                className='w-full justify-start text-red-500 px-0 h-7.5'
-              >
-                Logout
-              </Button>
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -94,7 +101,7 @@ const UserMenu = ({ userName, isLoading, onLogout }: UserMenuProps) => {
     );
   }
 
-  // Desktop (biasa pakai Radix)
+  // Desktop (Dropdown)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -123,9 +130,19 @@ const UserMenu = ({ userName, isLoading, onLogout }: UserMenuProps) => {
         <DropdownMenuItem asChild>
           <Link to='/reviews'>Reviews</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={onLogout} className='text-red-500'>
-          Logout
-        </DropdownMenuItem>
+
+        {/* Logout dengan confirm dialog */}
+        <LogoutConfirmDialog
+          trigger={
+            <DropdownMenuItem
+              onSelect={(e) => e.preventDefault()}
+              className='text-red-500'
+            >
+              Logout
+            </DropdownMenuItem>
+          }
+          onConfirm={onLogout}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

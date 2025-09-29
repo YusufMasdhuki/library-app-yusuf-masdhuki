@@ -4,21 +4,17 @@ import { Button } from '@/components/ui/button';
 import { useGetBookDetail } from '@/hooks/books/useBook';
 import { useReturnLoan } from '@/hooks/loans/useLoan';
 import { useGetMe } from '@/hooks/me/useMe';
-import type { MyLoan } from '@/types/loan-type';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { LoanCardProps, statusLabels } from './helper';
 
-interface LoanCardProps {
-  loan: MyLoan;
-}
-
-export const LoanCard = ({ loan }: LoanCardProps) => {
+export const LoanCard: React.FC<LoanCardProps> = ({ loan }) => {
   const { data: bookDetail, isLoading } = useGetBookDetail(loan.book.id);
   const { mutate: returnLoan, isPending } = useReturnLoan();
   const [openReview, setOpenReview] = useState(false);
-  const { data: me } = useGetMe(); // ambil data user login
+  const { data: me } = useGetMe();
   const navigate = useNavigate();
 
   const authorName = bookDetail?.data.author.name ?? 'Unknown Author';
@@ -46,7 +42,7 @@ export const LoanCard = ({ loan }: LoanCardProps) => {
               loan.status === 'LATE' && 'text-[#EE1D52] bg-[#EE1D521A]'
             )}
           >
-            {loan.status}
+            {statusLabels[loan.status]}
           </span>
         </div>
         <div className='flex items-center gap-1 md:gap-3'>
@@ -82,7 +78,12 @@ export const LoanCard = ({ loan }: LoanCardProps) => {
               {loan.book.title}
             </h3>
             <p className='text-sm md:text-md font-medium text-neutral-700'>
-              {isLoading ? 'Loading...' : authorName}
+              <Link
+                to={`/book-by-author/${bookDetail?.data.author.id}`}
+                className='hover:text-primary-300 transition-all transition-duration-300 ease-out'
+              >
+                {isLoading ? 'Loading...' : authorName}
+              </Link>
             </p>
             <span className='text-sm md:text-md font-bold'>
               {dayjs(loan.borrowedAt).format('DD MMM YYYY')} • Duration{' '}
@@ -122,12 +123,13 @@ export const LoanCard = ({ loan }: LoanCardProps) => {
           <ReturnConfirmDialog
             isPending={isPending}
             onConfirm={() => returnLoan(loan.id)}
+            bookTitle={loan.book.title} // ⬅️ kirim judulnya
             trigger={
               <Button
                 className='h-10 w-full md:max-w-[182px]'
                 disabled={isPending}
               >
-                Return Book
+                {isPending ? 'Returning...' : 'Return Book'}
               </Button>
             }
           />

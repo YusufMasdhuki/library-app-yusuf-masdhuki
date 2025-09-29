@@ -51,7 +51,7 @@ const CartPage = () => {
             <Checkbox
               checked={selectedIds.length === cartItems.length}
               onCheckedChange={(checked) => handleSelectAll(checked as boolean)}
-              className='data-[state=checked]:bg-primary-300 border-neutral-400'
+              className='data-[state=checked]:bg-primary-300 border-neutral-400 cursor-pointer'
             />
             <span className='text-md font-semibold'>Select All</span>
           </div>
@@ -70,7 +70,7 @@ const CartPage = () => {
                   <Checkbox
                     checked={selectedIds.includes(item.id)}
                     onCheckedChange={() => dispatch(toggleSelectItem(item.id))}
-                    className='data-[state=checked]:bg-primary-300 border-neutral-400'
+                    className='data-[state=checked]:bg-primary-300 border-neutral-400 cursor-pointer'
                   />
                   <Link
                     to={`/detail-book/${item.id}`}

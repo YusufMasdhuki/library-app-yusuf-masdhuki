@@ -1,12 +1,12 @@
 import ErrorScreen from '@/components/common/ErrorScreen';
-import LoadingScreen from '@/components/common/LoadingScreen';
+import BookByAuthorSkeleton from '@/components/common/skeleton/BookByAuthorSkeleton';
 import BookCard from '@/components/container/book-card';
 import { useGetAuthorBooks } from '@/hooks/authors/useAuthor';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const BookByAuthorPage = () => {
-  const { authorId } = useParams(); // ambil dari URL: /authors/:authorId
+  const { authorId } = useParams();
   const { data, isLoading, isError, error } = useGetAuthorBooks(
     Number(authorId)
   );
@@ -15,7 +15,7 @@ const BookByAuthorPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) return <BookByAuthorSkeleton />;
   if (isError || !data) return <ErrorScreen message={error?.message} />;
 
   const { author, books } = data.data;

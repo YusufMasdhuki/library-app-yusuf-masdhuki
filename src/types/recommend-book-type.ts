@@ -1,3 +1,5 @@
+import { Book } from './book-type';
+
 export interface RecommendBooksParams {
   limit?: number;
   by?: string;
@@ -12,26 +14,6 @@ export interface Author {
 export interface Category {
   id: number;
   name: string;
-}
-
-export interface Book {
-  id: number;
-  title: string;
-  description: string;
-  isbn: string;
-  publishedYear: number;
-  coverImage: string | null;
-  rating: number;
-  reviewCount: number;
-  totalCopies: number;
-  availableCopies: number;
-  borrowCount: number;
-  authorId: number;
-  categoryId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: Author;
-  category: Category;
 }
 
 export interface RecommendBooksSuccessResponse {

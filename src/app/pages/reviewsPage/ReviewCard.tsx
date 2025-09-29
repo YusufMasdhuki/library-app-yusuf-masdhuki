@@ -4,6 +4,7 @@ import { useGetBookDetail } from '@/hooks/books/useBook';
 import { useDeleteReview } from '@/hooks/reviews/useReview'; // pastikan path benar
 import dayjs from 'dayjs';
 import { Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ReviewCardProps {
   review: {
@@ -35,6 +36,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         <DeleteReviewDialog
           isPending={isPending}
           onConfirm={() => deleteReview(review.id)}
+          bookTitle={review.book.title}
           trigger={
             <Button
               size='icon'
@@ -49,7 +51,10 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
       </div>
 
       {/* Book info */}
-      <div className='flex items-center gap-3 md:gap-4 py-4 md:py-5'>
+      <Link
+        to={`/detail-book/${review.book.id}`}
+        className='flex items-center gap-3 md:gap-4 py-4 md:py-5'
+      >
         {review.book.coverImage ? (
           <img
             src={review.book.coverImage}
@@ -69,10 +74,16 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
             {review.book.title}
           </h3>
           <p className='text-sm md:text-md font-medium text-neutral-700'>
-            {isLoading ? 'Loading...' : bookDetail?.data.author.name}
+            <Link
+              to={`/book-by-author/${bookDetail?.data.author.id}`}
+              className='hover:text-primary-300 transition-all transition-duration-300 ease-out'
+              onClick={(e) => e.stopPropagation()}
+            >
+              {isLoading ? 'Loading...' : bookDetail?.data.author.name}
+            </Link>
           </p>
         </div>
-      </div>
+      </Link>
 
       {/* Review */}
       <div className='pt-4 md:pt-5 border-t border-neutral-300'>

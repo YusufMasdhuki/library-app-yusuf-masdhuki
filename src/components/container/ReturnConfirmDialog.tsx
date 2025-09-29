@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,21 +8,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { ReturnConfirmDialogProps } from '@/interfaces/ReturnConfirmDialogProps';
 import { AnimatePresence, motion } from 'motion/react';
-import { ReactNode } from 'react';
 
-interface ReturnConfirmDialogProps {
-  isPending: boolean;
-  onConfirm: () => void;
-  trigger: ReactNode;
-}
-
-export const ReturnConfirmDialog = ({
+export const ReturnConfirmDialog: React.FC<ReturnConfirmDialogProps> = ({
   isPending,
   onConfirm,
   trigger,
-}: ReturnConfirmDialogProps) => {
+  bookTitle,
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -40,8 +35,9 @@ export const ReturnConfirmDialog = ({
                 Confirm Return
               </DialogTitle>
               <DialogDescription className='text-sm md:text-md font-semibold mb-4'>
-                Are you sure you want to return this book? This action cannot be
-                undone.
+                Are you sure you want to return{' '}
+                <span className='font-bold text-primary-300'>{bookTitle}</span>?
+                This action cannot be undone.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>

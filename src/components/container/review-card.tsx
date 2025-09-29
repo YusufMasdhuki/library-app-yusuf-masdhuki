@@ -1,19 +1,6 @@
 // src/components/container/review-card.tsx
+import { ReviewCardProps } from '@/interfaces/review-card-props';
 import dayjs from 'dayjs';
-
-interface Review {
-  id: number;
-  user: {
-    name: string;
-  };
-  star: number;
-  comment: string;
-  createdAt: string;
-}
-
-interface ReviewCardProps {
-  review: Review;
-}
 
 const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   return (

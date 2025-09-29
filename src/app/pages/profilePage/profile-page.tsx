@@ -1,5 +1,5 @@
 import ErrorScreen from '@/components/common/ErrorScreen';
-import LoadingScreen from '@/components/common/LoadingScreen';
+import ProfilePageSkeleton from '@/components/common/skeleton/profile-page-skeleton';
 import { ProfileTabs } from '@/components/container/ProfileTabs';
 import { UpdateProfileDialog } from '@/components/container/update-profile-dialog';
 import { useGetMe } from '@/hooks/me/useMe';
@@ -13,7 +13,7 @@ const ProfilePage = () => {
   }, []);
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return <ProfilePageSkeleton />;
   }
 
   if (isError || !data?.data) {

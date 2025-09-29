@@ -1,9 +1,5 @@
 import BookCard from '@/components/container/book-card';
-import { Book } from '@/types/recommend-book-type';
-
-interface RelatedBooksSectionProps {
-  relatedBooks: Book[];
-}
+import { RelatedBooksSectionProps } from './helper';
 
 const RelatedBooksSection: React.FC<RelatedBooksSectionProps> = ({
   relatedBooks,

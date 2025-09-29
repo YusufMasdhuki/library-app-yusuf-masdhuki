@@ -1,12 +1,8 @@
 import { Input } from '@/components/ui/input';
+import { SearchBarProps } from '@/interfaces/SearchBarProps';
 import { Search } from 'lucide-react';
 
-interface SearchBarProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-const SearchBar = ({ value, onChange }: SearchBarProps) => (
+const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => (
   <div className='relative w-full md:max-w-125'>
     <Search className='absolute top-1/2 left-4 -translate-y-1/2 size-5 text-neutral-600' />
     <Input

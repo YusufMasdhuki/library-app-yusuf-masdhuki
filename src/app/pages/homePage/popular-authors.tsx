@@ -1,5 +1,5 @@
 import ErrorScreen from '@/components/common/ErrorScreen';
-import LoadingScreen from '@/components/common/LoadingScreen';
+import PopularAuthorsSkeleton from '@/components/common/skeleton/PopularAuthorsSkeleton';
 import { useGetAuthors } from '@/hooks/authors/useAuthor';
 import { authorService } from '@/services/authors/service';
 import { useQueries } from '@tanstack/react-query';
@@ -10,10 +10,8 @@ const PopularAuthors = () => {
 
   const navigate = useNavigate();
 
-  // Ambil list author, fallback ke array kosong biar hooks tetap dipanggil
   const authors = authorsData?.data.authors || [];
 
-  // useQueries harus dipanggil setiap render, jangan letakkan di dalam if
   const authorBooksQueries = useQueries({
     queries: authors.map((author) => ({
       queryKey: ['authorBooks', author.id],
@@ -22,7 +20,7 @@ const PopularAuthors = () => {
     })),
   });
 
-  if (isLoading) return <LoadingScreen className='min-h-20' />;
+  if (isLoading) return <PopularAuthorsSkeleton />;
   if (isError)
     return <ErrorScreen message={error?.message} className='min-h-20' />;
 

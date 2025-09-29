@@ -1,19 +1,10 @@
 import { Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import dayjs from 'dayjs';
+import { Checkbox } from '@/components/ui/checkbox';
+import { BorrowFormProps } from './helper';
 
-interface BorrowFormProps {
-  duration: number;
-  setDuration: (d: number) => void;
-  agree1: boolean;
-  setAgree1: (v: boolean) => void;
-  agree2: boolean;
-  setAgree2: (v: boolean) => void;
-  handleConfirm: () => void;
-  isPending: boolean;
-}
-
-export const BorrowForm = ({
+export const BorrowForm: React.FC<BorrowFormProps> = ({
   duration,
   setDuration,
   agree1,
@@ -22,7 +13,7 @@ export const BorrowForm = ({
   setAgree2,
   handleConfirm,
   isPending,
-}: BorrowFormProps) => {
+}) => {
   return (
     <div className='w-full rounded-3xl shadow-[0_0_20px_rgba(203,202,202,0.25)] p-4 md:p-5 flex flex-col gap-4 md:gap-6'>
       <h2 className='text-xl md:text-display-sm font-bold'>
@@ -71,20 +62,20 @@ export const BorrowForm = ({
       {/* agreement */}
       <div className='flex flex-col gap-2 text-sm md:text-md font-semibold'>
         <label className='flex items-center gap-2'>
-          <input
-            type='checkbox'
+          <Checkbox
             checked={agree1}
-            onChange={(e) => setAgree1(e.target.checked)}
+            onCheckedChange={(checked) => setAgree1(checked === true)}
+            className='data-[state=checked]:bg-primary-300 border-neutral-400 cursor-pointer'
           />
-          I agree to return the book(s) before the due date.
+          <span>I agree to return the book(s) before the due date.</span>
         </label>
         <label className='flex items-center gap-2'>
-          <input
-            type='checkbox'
+          <Checkbox
             checked={agree2}
-            onChange={(e) => setAgree2(e.target.checked)}
+            onCheckedChange={(checked) => setAgree2(checked === true)}
+            className='data-[state=checked]:bg-primary-300 border-neutral-400 cursor-pointer'
           />
-          I accept the library borrowing policy.
+          <span>I accept the library borrowing policy.</span>
         </label>
       </div>
 

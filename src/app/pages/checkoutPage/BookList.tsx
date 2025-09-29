@@ -1,10 +1,6 @@
-import { CartItem } from '@/store/slices/cart-slice';
+import { BookListProps } from './helper';
 
-interface BookListProps {
-  books: CartItem[];
-}
-
-export const BookList = ({ books }: BookListProps) => {
+export const BookList: React.FC<BookListProps> = ({ books }) => {
   return (
     <div className='flex flex-col gap-4 pt-4 md:pt-8 text-neutral-950'>
       <h2 className='text-lg md:text-display-xs font-bold'>Book List</h2>

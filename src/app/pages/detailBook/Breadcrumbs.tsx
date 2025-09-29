@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-
-interface BreadcrumbsProps {
-  currentTitle: string;
-  category?: { id: number; name: string }; // ✅ tambahan
-}
+import { BreadcrumbsProps } from './helper';
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   currentTitle,

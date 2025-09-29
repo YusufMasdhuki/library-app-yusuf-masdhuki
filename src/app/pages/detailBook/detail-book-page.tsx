@@ -1,15 +1,16 @@
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import ErrorScreen from '@/components/common/ErrorScreen';
+import BookInfoSectionSkeleton from '@/components/common/skeleton/BookInfoSectionSkeleton';
 import {
   useGetBookDetail,
   useGetRecommendedBooks,
 } from '@/hooks/books/useBook';
-import Breadcrumbs from './Breadcrumbs';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import BookInfoSection from './BookInfoSection';
-import ReviewsSection from './ReviewsSection';
+import Breadcrumbs from './Breadcrumbs';
 import RelatedBooksSection from './RelatedBooksSection';
-import LoadingScreen from '@/components/common/LoadingScreen';
-import ErrorScreen from '@/components/common/ErrorScreen';
+import ReviewsSection from './ReviewsSection';
+import ReviewsSectionSkeleton from '@/components/common/skeleton/ReviewsSectionSkeleton';
 
 const DetailBook = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,7 +29,16 @@ const DetailBook = () => {
   });
   const recommendedBooks = recommendedData?.data?.books || [];
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) {
+    return (
+      <div className='pt-20 pb-12 md:py-32'>
+        <div className='max-w-300 mx-auto px-4'>
+          <BookInfoSectionSkeleton />
+          <ReviewsSectionSkeleton />
+        </div>
+      </div>
+    );
+  }
   if (isError) return <ErrorScreen message={error?.message} />;
   if (!book) return <div>No book found</div>;
 

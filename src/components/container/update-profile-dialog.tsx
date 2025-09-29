@@ -1,6 +1,4 @@
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,26 +6,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUpdateMe } from '@/hooks/me/useMe';
-import { useState } from 'react';
+import { UpdateProfileDialogProps } from '@/interfaces/UpdateProfileDialogProps';
 import { errorToast, successToast } from '@/lib/toast-helper';
+import {
+  UpdateProfileForm,
+  updateProfileSchema,
+} from '@/schemas/updateProfileSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'motion/react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-const updateProfileSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-});
-
-type UpdateProfileForm = z.infer<typeof updateProfileSchema>;
-
-interface UpdateProfileDialogProps {
-  defaultName: string;
-}
-
-export const UpdateProfileDialog = ({
+export const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
   defaultName,
-}: UpdateProfileDialogProps) => {
+}) => {
   const { mutate: updateMe, isPending } = useUpdateMe();
   const [open, setOpen] = useState(false);
 

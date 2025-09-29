@@ -6,11 +6,11 @@ import { RootState } from '@/store';
 import { setSearchQuery } from '@/store/slices/reviewsSlice';
 import ReviewCard from './ReviewCard';
 import { useEffect, useMemo } from 'react';
-import LoadingScreen from '@/components/common/LoadingScreen';
 import ErrorScreen from '@/components/common/ErrorScreen';
 import { useInView } from 'react-intersection-observer';
 import { useGetMyReviewsInfinite } from '@/hooks/me/useMe';
 import type { MyReview } from '@/types/me-review-type';
+import ReviewsPageSkeleton from '@/components/common/skeleton/ReviewsPageSkeleton';
 
 const ReviewsPage = () => {
   const dispatch = useDispatch();
@@ -41,16 +41,22 @@ const ReviewsPage = () => {
     },
   });
 
-  // gabungkan semua pages
   const allReviews: MyReview[] = useMemo(
     () => data?.pages.flatMap((page) => page.data.reviews) ?? [],
     [data]
   );
 
-  // filter pakai searchQuery
   const filteredReviews = allReviews.filter((review) =>
     review.book.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (isLoading) {
+    return <ReviewsPageSkeleton />;
+  }
+
+  if (isError) {
+    return <ErrorScreen message={error?.message ?? 'Something went wrong'} />;
+  }
 
   return (
     <div className='pb-12 pt-20 md:py-32'>
@@ -71,12 +77,7 @@ const ReviewsPage = () => {
           />
         </div>
 
-        {/* Content */}
-        {isLoading && <LoadingScreen />}
-        {isError && (
-          <ErrorScreen message={error?.message ?? 'Something went wrong'} />
-        )}
-
+        {/* Reviews */}
         {filteredReviews.map((review) => (
           <ReviewCard key={review.id} review={review} />
         ))}
@@ -86,7 +87,7 @@ const ReviewsPage = () => {
           {isFetchingNextPage && <p>Loading more...</p>}
         </div>
 
-        {filteredReviews.length === 0 && !isLoading && (
+        {filteredReviews.length === 0 && (
           <p className='text-center text-gray-500 mt-6'>No reviews found.</p>
         )}
       </div>
